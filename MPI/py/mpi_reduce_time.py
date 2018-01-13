@@ -2,6 +2,7 @@ from __future__ import division
 import sys,time
 from time import time as t
 from itertools import product
+import numpy as np
 
 class Data():
     def __init__(self):
@@ -43,7 +44,7 @@ def run():
         data.c = 1e-12
 
         data.d_list = ['a','b','c','d']
-        data.e_dict = { "".join(x):1.0 for x in product('abcd', repeat=3) } 
+        data.e_dict = { "".join(x):1.0 for x in product('abcd', repeat=2) } 
 
     #Send the same data to all other ranks
     data = comm.bcast(data, root = 0)
@@ -57,6 +58,16 @@ def run():
     print "MPI_REDUCE_CALL END RANK=%d:%d TIME=%f"%(rank,rank, t())
     comm.Barrier()
     MPI.Finalize()
+    if rank==0:
+        assert ( data.a == size )
+        assert ( np.allclose(data.b, size*1.0) )
+        assert ( np.allclose(data.c, size*1e-12) )
+        assert ( len(data.d_list) == size*4 )
+        assert ( all(np.allclose(v, size*1.0) for v in data.e_dict.values()) )
+        print "Value checks passed."
+        print "# sum(data.a)=%d     sum(data.b)=%f      sum(data.c)=%e"%(data.a,data.b,data.c)
+        print "# Concatenated data.d_list=", data.d_list
+        print "# Combined data.e_dict=", data.e_dict
 
 if (__name__ == "__main__"):
     run()
