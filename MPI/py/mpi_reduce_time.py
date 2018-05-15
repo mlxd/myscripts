@@ -14,7 +14,7 @@ class Data():
         self.e_dict = {}
 
 def mpi_reduce_op(data0, data1, datatype):
-    print 'MPI_REDUCE START RANK=%d:%d TIME=%f'%(data0.rank, data1.rank, t() )
+    print 'MPI_REDUCE START RANK=%d:%d TIME=%f\n'%(data0.rank, data1.rank, t() )
     data0.a += data1.a
     data0.b += data1.b
     data0.c += data1.c
@@ -22,7 +22,7 @@ def mpi_reduce_op(data0, data1, datatype):
     data0.d_list.extend( data1.d_list )
     data0.e_dict = { key : data0.e_dict.get(key, 0) + data1.e_dict.get(key, 0) for key in set( data0.e_dict.keys() ) | set( data1.e_dict.keys() ) }
 
-    print 'MPI_REDUCE END RANK=%d:%d TIME=%f'%(data0.rank, data1.rank, t() )
+    print 'MPI_REDUCE END RANK=%d:%d TIME=%f\n'%(data0.rank, data1.rank, t() )
     return data0
 
 def run():
@@ -53,9 +53,9 @@ def run():
     data.rank = rank
 
     #Call the reduce operation we would like to time
-    print "MPI_REDUCE_CALL START RANK=%d:%d TIME=%f"%(rank,rank, t())
+    print "MPI_REDUCE_CALL START RANK=%d:%d TIME=%f#"%(rank,rank, t())
     data = comm.reduce(data, op=reduce_op, root=0)
-    print "MPI_REDUCE_CALL END RANK=%d:%d TIME=%f"%(rank,rank, t())
+    print "MPI_REDUCE_CALL END RANK=%d:%d TIME=%f#"%(rank,rank, t())
     comm.Barrier()
     MPI.Finalize()
     if rank==0:
