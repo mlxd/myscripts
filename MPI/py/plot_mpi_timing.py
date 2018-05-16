@@ -5,6 +5,14 @@ from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 import matplotlib.markers as mkr
 
+plt_style='ggplot'
+plt.rcParams['font.size'] = 11
+plt.rcParams['font.family'] = 'serif'
+plt.rcParams['axes.labelsize'] = 11
+plt.rcParams['axes.labelweight'] = 'bold'
+plt.rcParams['xtick.labelsize'] = 9
+plt.rcParams['ytick.labelsize'] = 9
+plt.rcParams['figure.titlesize'] = 12
 
 #We begin by loading the CSV file of rank pairings and times into the appropriate format
 StartStr = str(sys.argv[1])
@@ -21,6 +29,7 @@ t0 = np.min(start['t'])
 
 #3D Rank A:B vs time diagram
 fig = plt.figure()
+plt.style.use(plt_style)
 fig.clf()
 ax = fig.add_subplot(111, projection='3d')
 ax.set_zlabel('time [s]')
@@ -40,6 +49,7 @@ plt.show()
 plt.savefig('3d_%s_%s.pdf'%(StartStr, EndStr))
 plt.clf()
 
+plt.style.use( plt_style )
 #2D connections diagram
 #Draw lines to mark the MPI ranks
 for ii in xrange(np.max([start['A'],start['B']])):
