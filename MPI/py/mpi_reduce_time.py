@@ -4,6 +4,7 @@ from time import time as t
 from itertools import product
 import numpy as np
 
+#Simple class to hold our data
 class Data():
     def __init__(self):
         self.a = 0
@@ -13,6 +14,7 @@ class Data():
         self.d_list = []
         self.e_dict = {}
 
+#User defined MPI reduce operator. Requires 2 data arguments, and a datatype argument
 def mpi_reduce_op(data0, data1, datatype):
     print 'MPI_REDUCE START RANK=%d:%d TIME=%f\n'%(data0.rank, data1.rank, t() )
     data0.a += data1.a
@@ -25,6 +27,7 @@ def mpi_reduce_op(data0, data1, datatype):
     print 'MPI_REDUCE END RANK=%d:%d TIME=%f\n'%(data0.rank, data1.rank, t() )
     return data0
 
+#Run the MPI reduce example
 def run():
     from mpi4py import MPI
     comm = MPI.COMM_WORLD
